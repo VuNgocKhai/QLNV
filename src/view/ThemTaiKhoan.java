@@ -25,9 +25,9 @@ public class ThemTaiKhoan extends javax.swing.JFrame {
 
     }
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=DANGNHAP";
+    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:1433;databaseName=DANGNHAP";
     String user = "sa";
-    String password = "123123oK";
+    String password = "sa";
     Statement st;
     ResultSet rs;
 
@@ -154,7 +154,9 @@ public class ThemTaiKhoan extends javax.swing.JFrame {
         }
         try {
             Class.forName(driver);
-            Connection conn = DriverManager.getConnection(url,user,password);
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:"
+                    + "1433;databaseName=DANGNHAP;"
+                    + "user=sa;password=sa;encrypt=true;trustServerCertificate=true;");
             String sql = "insert into ACCOUNT values (?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, txtUser.getText());
@@ -163,11 +165,13 @@ public class ThemTaiKhoan extends javax.swing.JFrame {
             ps.setString(4, pwfCPW.getText());
             int n = ps.executeUpdate();
             if (txtUser.getText().equals("")|pwfPW.getText().equals("")|pwfCPW.getText().equals("")|txtGmail.getText().equals("")) {
-                    JOptionPane.showMessageDialog(this, "Không để thông tin trống");
+                    JOptionPane.showMessageDialog(this, "Không để thông tin trống");  
             }
-            else if (n!=0){ JOptionPane.showMessageDialog(this, "Đăng kí thành công");}
-            else if (pwfPW.getText()==pwfCPW.getText()){ JOptionPane.showMessageDialog(this, "Mật khẩu không trùng khớp");}
+            else if (n!=0){ JOptionPane.showMessageDialog(this, "Đăng kí thành công"); 
+            }
+
             else { JOptionPane.showMessageDialog(this, "Đăng kí thất bại");}
+            
         } catch (Exception e) {
         }
         // TODO add your handling code here:

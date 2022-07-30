@@ -23,12 +23,13 @@ public class DangNhapView extends javax.swing.JFrame {
     public DangNhapView() {
         initComponents();
     }
-String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=DANGNHAP";
     String user = "sa";
-    String password = "123123oK";
+    String password = "sa";
     Statement st;
     ResultSet rs;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,6 +46,7 @@ String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
         txtUser = new javax.swing.JTextField();
         pwfPW = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
+        btThayMK = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,6 +73,13 @@ String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Quản lý nhân viên");
 
+        btThayMK.setText("Thay thông tin");
+        btThayMK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btThayMKActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,7 +90,9 @@ String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnDangKy)
                         .addGap(34, 34, 34)
-                        .addComponent(btnDAngNhap))
+                        .addComponent(btnDAngNhap)
+                        .addGap(39, 39, 39)
+                        .addComponent(btThayMK))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -91,7 +102,7 @@ String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                             .addComponent(txtUser)
                             .addComponent(pwfPW, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,7 +120,8 @@ String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDAngNhap)
-                    .addComponent(btnDangKy))
+                    .addComponent(btnDangKy)
+                    .addComponent(btThayMK))
                 .addContainerGap(88, Short.MAX_VALUE))
         );
 
@@ -117,30 +129,38 @@ String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangKyActionPerformed
-new ThemTaiKhoan().setVisible(true);
-this.dispose();
+        new ThemTaiKhoan().setVisible(true);
+        this.dispose();
 // TODO add your handling code here:
     }//GEN-LAST:event_btnDangKyActionPerformed
 
     private void btnDAngNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDAngNhapActionPerformed
-try {
+        try {
             Class.forName(driver);
-            Connection conn = DriverManager.getConnection(url,user,password);
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:"
+                    + "1433;databaseName=DANGNHAP;"
+                    + "user=sa;password=sa;encrypt=true;trustServerCertificate=true;");
             String sql = "select * from account where USERNAME=? and PASS=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareCall(sql);
             ps.setString(1, txtUser.getText());
             ps.setString(2, pwfPW.getText());
-            int n = ps.executeUpdate();
-            if (txtUser.getText().equals("")|pwfPW.getText().equals("")) {
-                    JOptionPane.showMessageDialog(this, "Chưa nhập user hoặc pass");
+            rs = ps.executeQuery();
+            if (txtUser.getText().equals("") | pwfPW.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Chưa nhập user hoặc pass");
+            } else if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+                new QuanLyNhanVienView().setVisible(true);
+                this.dispose();
             }
-            else if (rs.next()){ JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-            new QuanLyNhanVienView().setVisible(true);
-            this.dispose();}
-            
+            else {JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập");}
+
         } catch (Exception e) {
         }        // TODO add your handling code here:
     }//GEN-LAST:event_btnDAngNhapActionPerformed
+
+    private void btThayMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThayMKActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btThayMKActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,6 +198,7 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btThayMK;
     private javax.swing.JButton btnDAngNhap;
     private javax.swing.JButton btnDangKy;
     private javax.swing.JLabel jLabel1;

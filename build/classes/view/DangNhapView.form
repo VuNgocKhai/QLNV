@@ -30,6 +30,8 @@
                       <Component id="btnDangKy" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                       <Component id="btnDAngNhap" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="btThayMK" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -44,7 +46,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="106" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -67,6 +69,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnDAngNhap" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnDangKy" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btThayMK" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="88" max="32767" attributes="0"/>
           </Group>
@@ -114,6 +117,14 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; nh&#xe2;n vi&#xea;n"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btThayMK">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Thay th&#xf4;ng tin"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btThayMKActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
