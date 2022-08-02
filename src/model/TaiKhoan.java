@@ -12,7 +12,6 @@ public class TaiKhoan {
     private String TaiKhoan;
     private String matKhau;
     private String gmail;
-    
 
     public TaiKhoan() {
     }
@@ -22,6 +21,7 @@ public class TaiKhoan {
         this.matKhau = matKhau;
         this.gmail = gmail;
     }
+
 
     public String getTaiKhoan() {
         return TaiKhoan;
@@ -46,6 +46,11 @@ public class TaiKhoan {
     public void setGmail(String gmail) {
         this.gmail = gmail;
     }
+
+    
+    
+
+    
 
     
    
