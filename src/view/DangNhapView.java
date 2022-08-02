@@ -24,9 +24,9 @@ public class DangNhapView extends javax.swing.JFrame {
         initComponents();
     }
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=DANGNHAP";
+    String url = "jdbc:sqlserver://LAPTOP-C94PQP9M\\SQLEXPRESS01:1433;databaseName=DANGNHAP";
     String user = "sa";
-    String password = "sa";
+    String password = "quocanh02";
     Statement st;
     ResultSet rs;
 
@@ -137,9 +137,9 @@ public class DangNhapView extends javax.swing.JFrame {
     private void btnDAngNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDAngNhapActionPerformed
         try {
             Class.forName(driver);
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:"
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://LAPTOP-C94PQP9M\\SQLEXPRESS01:"
                     + "1433;databaseName=DANGNHAP;"
-                    + "user=sa;password=sa;encrypt=true;trustServerCertificate=true;");
+                    + "user=sa;password=quocanh02;encrypt=true;trustServerCertificate=true;");
             String sql = "select * from account where USERNAME=? and PASS=?";
             PreparedStatement ps = conn.prepareCall(sql);
             ps.setString(1, txtUser.getText());
@@ -159,7 +159,8 @@ public class DangNhapView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDAngNhapActionPerformed
 
     private void btThayMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThayMKActionPerformed
-        // TODO add your handling code here:
+        new ThayDoiMatKhau().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btThayMKActionPerformed
 
     /**

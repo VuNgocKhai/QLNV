@@ -4,6 +4,13 @@
  */
 package view;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+import model.TaiKhoan;
+import services.TaiKhoanServices;
+
 /**
  *
  * @author ngock
@@ -13,8 +20,10 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
     /**
      * Creates new form ThayDoiMatKhau
      */
+    private TaiKhoanServices taiKhoanServices;
     public ThayDoiMatKhau() {
         initComponents();
+        taiKhoanServices = new TaiKhoanServices();
     }
 
     /**
@@ -31,12 +40,14 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        btnDangNhap = new javax.swing.JButton();
+        BtnDoiMatKhau = new javax.swing.JButton();
+        txtTaiKhoan = new javax.swing.JTextField();
+        txtMKMoi = new javax.swing.JTextField();
+        txtXacNhanMK = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JPasswordField();
+        jLabel6 = new javax.swing.JLabel();
+        txtGmail = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,14 +62,21 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
 
         jLabel5.setText("Nhập lại mật khẩu");
 
-        jButton1.setText("Đăng nhập");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDangNhap.setText("Đăng nhập");
+        btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDangNhapActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Thay đổi");
+        BtnDoiMatKhau.setText("Thay đổi");
+        BtnDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDoiMatKhauActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Gmail");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,24 +91,26 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48)
+                                .addComponent(txtTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jLabel3)
                                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)))
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField3)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtMKMoi, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtXacNhanMK, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(36, 36, 36)
-                                        .addComponent(jButton2))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(48, 48, 48)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(btnDangNhap)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(BtnDoiMatKhau))
+                                    .addComponent(txtGmail))))))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -101,33 +121,61 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtGmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtMKMoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                    .addComponent(txtXacNhanMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(btnDangNhap)
+                    .addComponent(BtnDoiMatKhau))
+                .addGap(67, 67, 67))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-new DangNhapView().setVisible(true);
-this.dispose();        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
+        new DangNhapView().setVisible(true);
+        this.dispose();  
+    }//GEN-LAST:event_btnDangNhapActionPerformed
+
+    private void BtnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDoiMatKhauActionPerformed
+        // TODO add your handling code here:
+        String tk = txtTaiKhoan.getText();
+        String mk = txtPassword.getText();
+        String mail = txtGmail.getText();
+        String mkMoi = txtMKMoi.getText();
+        String xacNhan = txtXacNhanMK.getText();
+        
+        if(tk.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de trong");
+        }if(mk.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de mat khau trong");
+        } if(mkMoi.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de mat khau moi trong");
+        } if(xacNhan.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de mat khau xac nhan trong");
+        } if(!xacNhan.equals(mkMoi)) {
+            JOptionPane.showMessageDialog(this, "Mat khau xac nhan phai trung nhau");
+        } 
+        TaiKhoan tkhoan = new TaiKhoan(tk, mk, mail);
+        this.taiKhoanServices.suaTaiKhoan(tkhoan);
+  
+    }//GEN-LAST:event_BtnDoiMatKhauActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,16 +213,18 @@ this.dispose();        // TODO add your handling code here:
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton BtnDoiMatKhau;
+    private javax.swing.JButton btnDangNhap;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField txtGmail;
+    private javax.swing.JTextField txtMKMoi;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtTaiKhoan;
+    private javax.swing.JTextField txtXacNhanMK;
     // End of variables declaration//GEN-END:variables
 }
