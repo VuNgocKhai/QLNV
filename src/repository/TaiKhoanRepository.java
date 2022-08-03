@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import model.TaiKhoan;
 import utility.JDBCHelper;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +24,25 @@ public class TaiKhoanRepository {
     public TaiKhoanRepository() {
         this.listTaiKhoans = new ArrayList<>();
         this.jDBCHelper = new JDBCHelper();
+    }
+    
+    
+    public List<TaiKhoan> layHetTaiKhoan() {
+        String sql = "select * from ACCOUNT";
+        ResultSet rs = this.jDBCHelper.executeQuery(sql);
+        try {
+            while(rs.next()) {
+                String user = rs.getString("USERNAME");
+                String pass = rs.getString("PASSWORD");
+                String mail = rs.getString("MAIL");
+                
+                listTaiKhoans.add(new TaiKhoan(user, pass, mail));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TaiKhoanRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listTaiKhoans;
     }
     
     public void thayDoiTaiKhoan(TaiKhoan tk) {

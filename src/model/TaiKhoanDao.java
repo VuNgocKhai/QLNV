@@ -2,18 +2,19 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
+import repository.TaiKhoanRepository;
 
 
 public class TaiKhoanDao {
-    ArrayList<TaiKhoan> list = new ArrayList<>();
+    private TaiKhoanRepository taiKhoanRepository = new TaiKhoanRepository();
     
-    public TaiKhoanDao(){
-        list.add(new TaiKhoan("admin","12345","admin@gmail"));
-        list.add(new TaiKhoan("abc","12345","abc@gmail"));
-        list.add(new TaiKhoan("abcd","12345","abc@gmail"));
+    public List<TaiKhoan> TaiKhoanDao(){
+        return this.taiKhoanRepository.layHetTaiKhoan();
     } 
     
     public Boolean checkLogin(String userName, String pass){
+        List<TaiKhoan> list = taiKhoanRepository.layHetTaiKhoan();
         for(TaiKhoan us: list){
             if(us.getTaiKhoan().equals(userName)&& us.getMatKhau().equals(pass)){
                 return true;

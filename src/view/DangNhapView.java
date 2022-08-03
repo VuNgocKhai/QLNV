@@ -69,8 +69,6 @@ public class DangNhapView extends javax.swing.JFrame {
             }
         });
 
-        pwfPW.setText("jPasswordField1");
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Quản lý nhân viên");
 
