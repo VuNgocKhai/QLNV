@@ -45,16 +45,16 @@ public class TaiKhoanRepository {
         return listTaiKhoans;
     }
     
-    public void thayDoiTaiKhoan(TaiKhoan tk) {
+    public Integer thayDoiTaiKhoan(TaiKhoan tk) {
         String taiKhoan = tk.getTaiKhoan();
         String mk = tk.getMatKhau();
         String mail = tk.getGmail();
         Integer row;
         
-        String sql = "update ACCOUNT set PASSWORD = ?\n" +
-"where USERNAME = ? and PASSWORD = ?";
-        jDBCHelper.executeUpdate(sql, mail,taiKhoan , mk);
-    
+        String sql = "update ACCOUNT set PASSWORD = ?, MAIL = ?\n" +
+"where USERNAME = ?";
+        row = jDBCHelper.executeUpdate(sql,mk, mail,taiKhoan );
+        return row;
     }
     
     public Integer themTaiKhoan(TaiKhoan tk) {

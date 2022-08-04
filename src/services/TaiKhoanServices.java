@@ -21,8 +21,8 @@ public class TaiKhoanServices {
     public List<TaiKhoan> layTatCaTaiKhoan() {
         return this.taiKhoanRepository.layHetTaiKhoan();
     }
-    public void suaTaiKhoan(TaiKhoan tk) {
-          this.taiKhoanRepository.thayDoiTaiKhoan(tk);
+    public Integer suaTaiKhoan(TaiKhoan tk) {
+        return  this.taiKhoanRepository.thayDoiTaiKhoan(tk);
     }
     public Integer themTaiKhoan(TaiKhoan tk) {
         return this.taiKhoanRepository.themTaiKhoan(tk);

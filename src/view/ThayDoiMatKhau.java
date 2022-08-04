@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 import model.TaiKhoan;
+import model.TaiKhoanDao;
 import services.TaiKhoanServices;
 
 /**
@@ -21,9 +22,11 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
      * Creates new form ThayDoiMatKhau
      */
     private TaiKhoanServices taiKhoanServices;
+    private TaiKhoanDao taiKhoanDao;
     public ThayDoiMatKhau() {
         initComponents();
         taiKhoanServices = new TaiKhoanServices();
+        taiKhoanDao = new TaiKhoanDao();
     }
 
     /**
@@ -167,7 +170,12 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
         }if(mk.isBlank()) {
             JOptionPane.showMessageDialog(this, "Khong duoc de mat khau trong");
             return;
-        }if(mkMoi.isBlank()) {
+        }
+        if(!taiKhoanDao.checkLogin(tk, mk)) {
+            JOptionPane.showMessageDialog(this, "Tai khoan va mat khau phai trung nhau");
+            return;
+        }
+        if(mkMoi.isBlank()) {
             JOptionPane.showMessageDialog(this, "Khong duoc de mat khau moi trong");
             return;
         }if(xacNhan.isBlank()) {
@@ -178,8 +186,12 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
             return;
         } 
         TaiKhoan tkhoan = new TaiKhoan(tk, mkMoi, mail);
-        this.taiKhoanServices.suaTaiKhoan(tkhoan);
-  
+        try {
+            this.taiKhoanServices.suaTaiKhoan(tkhoan);
+            JOptionPane.showMessageDialog(this, "Sua thong tin thanh cong");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Sua thong tin that bai");
+        }
     }//GEN-LAST:event_BtnDoiMatKhauActionPerformed
 
     /**
