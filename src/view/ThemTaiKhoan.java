@@ -10,6 +10,8 @@ import java.beans.Statement;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import model.TaiKhoan;
+import services.TaiKhoanServices;
 
 /**
  *
@@ -20,9 +22,10 @@ public class ThemTaiKhoan extends javax.swing.JFrame {
     /**
      * Creates new form ThemTaiKhoan
      */
+    private TaiKhoanServices taiKhoanServices;
     public ThemTaiKhoan() {
         initComponents();
-
+        taiKhoanServices = new TaiKhoanServices();
     }
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     String url = "jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:1433;databaseName=DANGNHAP";
@@ -148,32 +151,35 @@ public class ThemTaiKhoan extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDKActionPerformed
-        int DK = JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng kí không", "Confirm", JOptionPane.YES_NO_OPTION);
-        if (DK != JOptionPane.YES_OPTION) {
+        String user = txtUser.getText();
+        if(user.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de trong");
             return;
         }
-        try {
-            Class.forName(driver);
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:"
-                    + "1433;databaseName=DANGNHAP;"
-                    + "user=sa;password=sa;encrypt=true;trustServerCertificate=true;");
-            String sql = "insert into ACCOUNT values (?,?,?,?)";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, txtUser.getText());
-            ps.setString(2, txtGmail.getText());
-            ps.setString(3, pwfPW.getText());
-            ps.setString(4, pwfCPW.getText());
-            int n = ps.executeUpdate();
-            if (txtUser.getText().equals("")|pwfPW.getText().equals("")|pwfCPW.getText().equals("")|txtGmail.getText().equals("")) {
-                    JOptionPane.showMessageDialog(this, "Không để thông tin trống");  
-            }
-            else if (n!=0){ JOptionPane.showMessageDialog(this, "Đăng kí thành công"); 
-            }
-
-            else { JOptionPane.showMessageDialog(this, "Đăng kí thất bại");}
-            
-        } catch (Exception e) {
+        String mail = txtGmail.getText();
+        if(mail.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de trong");
+            return;
         }
+        String pasWord = pwfPW.getText();
+        if(pasWord.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de trong");
+        }
+        String cfPass = pwfCPW.getText();
+        if(cfPass.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de trong");
+        }
+        if(!cfPass.equals(pasWord)) {
+            JOptionPane.showMessageDialog(this, "Mat khau xac nhan phai trung mat khau dang ki");
+            return;
+        }
+        TaiKhoan tk = new TaiKhoan(user, cfPass, mail);
+        if(this.taiKhoanServices.themTaiKhoan(tk) != null) {
+            JOptionPane.showMessageDialog(this, "Them tai khoan thanh cong");
+        }else {
+            JOptionPane.showConfirmDialog(this, "Them tai khoan that bai");
+        }
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDKActionPerformed
 

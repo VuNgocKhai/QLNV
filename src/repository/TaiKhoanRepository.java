@@ -49,11 +49,20 @@ public class TaiKhoanRepository {
         String taiKhoan = tk.getTaiKhoan();
         String mk = tk.getMatKhau();
         String mail = tk.getGmail();
+        Integer row;
         
-        String sql = "update ACCOUNT set GMAIL = ?, PASS = ?\n" +
-"where USERNAME = ?";
-        jDBCHelper.executeUpdate(sql, mail, mk, taiKhoan);
+        String sql = "update ACCOUNT set PASSWORD = ?\n" +
+"where USERNAME = ? and PASSWORD = ?";
+        jDBCHelper.executeUpdate(sql, mail,taiKhoan , mk);
     
     }
+    
+    public Integer themTaiKhoan(TaiKhoan tk) {
+            String sql = "insert into ACCOUNT values(?, ?, ?)";
+            Integer row = jDBCHelper.executeUpdate(sql, tk.getTaiKhoan(), tk.getMatKhau(), tk.getGmail());
+            return row;
+        }
+    
+    
     
 }

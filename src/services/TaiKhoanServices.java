@@ -22,6 +22,9 @@ public class TaiKhoanServices {
         return this.taiKhoanRepository.layHetTaiKhoan();
     }
     public void suaTaiKhoan(TaiKhoan tk) {
-         this.taiKhoanRepository.thayDoiTaiKhoan(tk);
+          this.taiKhoanRepository.thayDoiTaiKhoan(tk);
+    }
+    public Integer themTaiKhoan(TaiKhoan tk) {
+        return this.taiKhoanRepository.themTaiKhoan(tk);
     }
 }

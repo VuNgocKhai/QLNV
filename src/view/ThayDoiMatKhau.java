@@ -78,8 +78,6 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
 
         jLabel6.setText("Gmail");
 
-        txtXacNhanMK.setText("jPasswordField1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -165,16 +163,21 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
         
         if(tk.isBlank()) {
             JOptionPane.showMessageDialog(this, "Khong duoc de trong");
+            return;
         }if(mk.isBlank()) {
             JOptionPane.showMessageDialog(this, "Khong duoc de mat khau trong");
-        } if(mkMoi.isBlank()) {
+            return;
+        }if(mkMoi.isBlank()) {
             JOptionPane.showMessageDialog(this, "Khong duoc de mat khau moi trong");
-        } if(xacNhan.isBlank()) {
+            return;
+        }if(xacNhan.isBlank()) {
             JOptionPane.showMessageDialog(this, "Khong duoc de mat khau xac nhan trong");
-        } if(!xacNhan.equals(mkMoi)) {
+            return;
+        }if(!xacNhan.equals(mkMoi)) {
             JOptionPane.showMessageDialog(this, "Mat khau xac nhan phai trung nhau");
+            return;
         } 
-        TaiKhoan tkhoan = new TaiKhoan(tk, mk, mail);
+        TaiKhoan tkhoan = new TaiKhoan(tk, mkMoi, mail);
         this.taiKhoanServices.suaTaiKhoan(tkhoan);
   
     }//GEN-LAST:event_BtnDoiMatKhauActionPerformed
