@@ -3,15 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/model/TaiKhoan.java</file>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/view/DangNhapView.java</file>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/view/QuanLyNhanVienView.java</file>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/view/ThemTaiKhoan.java</file>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/repository/DBContext.java</file>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/view/ThayDoiMatKhau.java</file>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/utility/JDBCHelper.java</file>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/repository/TaiKhoanRepository.java</file>
-            <file>file:/C:/Users/acer/Documents/GitHub/QLNV/src/services/TaiKhoanServices.java</file>
+            <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/ThemTaiKhoan.java</file>
+            <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/QuanLyNhanVienView.java</file>
+            <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/ThayDoiMatKhau.java</file>
+            <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/DangNhapView.java</file>
+            <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/QuanLyNhanVienAdmin.java</file>
         </group>
     </open-files>
 </project-private>
