@@ -4,12 +4,13 @@
  */
 package view;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import model.TaiKhoan;
+import model.TaiKhoanDao;
+import services.TaiKhoanServices;
 
 /**
  *
@@ -20,18 +21,12 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
     /**
      * Creates new form ThayDoiMatKhau
      */
-    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=DANGNHAP";
-    String user = "sa";
-    String password = "sa";
-    Statement st;
-    ResultSet rs;
-    ResultSet rs1;
-    ResultSet rs2;
-    ResultSet rs3;
-
+    private TaiKhoanServices taiKhoanServices;
+    private TaiKhoanDao taiKhoanDao;
     public ThayDoiMatKhau() {
         initComponents();
+        taiKhoanServices = new TaiKhoanServices();
+        taiKhoanDao = new TaiKhoanDao();
     }
 
     /**
@@ -48,12 +43,14 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        txtUser = new javax.swing.JTextField();
-        pwfPW = new javax.swing.JPasswordField();
-        pwfNewPW = new javax.swing.JPasswordField();
-        pwfNewPW2 = new javax.swing.JPasswordField();
+        btnDangNhap = new javax.swing.JButton();
+        BtnDoiMatKhau = new javax.swing.JButton();
+        txtTaiKhoan = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JPasswordField();
+        jLabel6 = new javax.swing.JLabel();
+        txtGmail = new javax.swing.JTextField();
+        txtMKMoi = new javax.swing.JPasswordField();
+        txtXacNhanMK = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,19 +65,21 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
 
         jLabel5.setText("Nhập lại mật khẩu");
 
-        jButton1.setText("Đăng nhập");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDangNhap.setText("Đăng nhập");
+        btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDangNhapActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Thay đổi");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        BtnDoiMatKhau.setText("Thay đổi");
+        BtnDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                BtnDoiMatKhauActionPerformed(evt);
             }
         });
+
+        jLabel6.setText("Gmail");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,26 +94,26 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48)
+                                .addComponent(txtTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jLabel3)
                                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE))
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(54, 54, 54)
-                                        .addComponent(jButton2))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(pwfPW)
-                                            .addComponent(pwfNewPW)
-                                            .addComponent(pwfNewPW2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(48, 48, 48)
-                                .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(btnDangNhap)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                                        .addComponent(BtnDoiMatKhau))
+                                    .addComponent(txtGmail)
+                                    .addComponent(txtMKMoi, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtXacNhanMK, javax.swing.GroupLayout.Alignment.LEADING))))))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -125,85 +124,75 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTaiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(pwfPW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(pwfNewPW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtGmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(txtMKMoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(pwfNewPW2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                    .addComponent(txtXacNhanMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(btnDangNhap)
+                    .addComponent(BtnDoiMatKhau))
+                .addGap(67, 67, 67))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         new DangNhapView().setVisible(true);
-        this.dispose();        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        this.dispose();  
+    }//GEN-LAST:event_btnDangNhapActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void BtnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDoiMatKhauActionPerformed
+        // TODO add your handling code here:
+        String tk = txtTaiKhoan.getText();
+        String mk = txtPassword.getText();
+        String mail = txtGmail.getText();
+        String mkMoi = txtMKMoi.getText();
+        String xacNhan = txtXacNhanMK.getText();
+        
+        if(tk.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de trong");
+            return;
+        }if(mk.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de mat khau trong");
+            return;
+        }
+        if(!taiKhoanDao.checkLogin(tk, mk)) {
+            JOptionPane.showMessageDialog(this, "Tai khoan va mat khau phai trung nhau");
+            return;
+        }
+        if(mkMoi.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de mat khau moi trong");
+            return;
+        }if(xacNhan.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Khong duoc de mat khau xac nhan trong");
+            return;
+        }if(!xacNhan.equals(mkMoi)) {
+            JOptionPane.showMessageDialog(this, "Mat khau xac nhan phai trung nhau");
+            return;
+        } 
+        TaiKhoan tkhoan = new TaiKhoan(tk, mkMoi, mail);
         try {
-            Class.forName(driver);
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:"
-                    + "1433;databaseName=DANGNHAP;"
-                    + "user=sa;password=sa;encrypt=true;trustServerCertificate=true;");
-            String sql = "select * from account where USERNAME=? and PASS=?";
-            String sql1 = "select * from tkAdmin where taikhoan=? and matkhau=?";
-            PreparedStatement ps = conn.prepareCall(sql);
-            PreparedStatement ps1 = conn.prepareCall(sql1);
-            ps.setString(1, txtUser.getText());
-            ps.setString(2, pwfPW.getText());
-            ps1.setString(1, txtUser.getText());
-            ps1.setString(2, pwfPW.getText());
-            rs = ps.executeQuery();
-            rs1 = ps1.executeQuery();
-            if (txtUser.getText().equals("") | pwfPW.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Chưa nhập user hoặc pass");
-
-            } else if (rs1.next()) {
-                if (pwfNewPW.getText().isBlank() | pwfNewPW2.getText().isBlank()) {
-                    JOptionPane.showMessageDialog(this, "Chưa nhập mật khẩu mới");
-                    return;
-                } else {
-                    String sql2 = "update tkAdmin set matkhau=? where taikhoan = ?";
-                    PreparedStatement ps2 = conn.prepareCall(sql2);
-                    ps2.setString(2, txtUser.getText());
-                    ps2.setString(1, pwfNewPW.getText());
-                    rs2 = ps2.executeQuery();
-                    JOptionPane.showMessageDialog(this, "Thay đổi mật khẩu thành công");
-                }
-            } else if (rs.next()) {
-                if (pwfNewPW.getText().isBlank() | pwfNewPW2.getText().isBlank()) {
-                    JOptionPane.showMessageDialog(this, "Chưa nhập mật khẩu mới");
-                    return;
-                } else {
-                    String sql3 = "update account set PASS=? confirm=? where USERNAME = ?";
-                    PreparedStatement ps3 = conn.prepareCall(sql3);
-                    ps3.setString(3, txtUser.getText());
-                    ps3.setString(2, pwfNewPW.getText());
-                    ps3.setString(1, pwfNewPW.getText());
-                    rs3 = ps3.executeQuery();
-                    JOptionPane.showMessageDialog(this, "Thay đổi mật khẩu thành công");
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập");
-            }
-
+            this.taiKhoanServices.suaTaiKhoan(tkhoan);
+            JOptionPane.showMessageDialog(this, "Sua thong tin thanh cong");
         } catch (Exception e) {
-        }          // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+            JOptionPane.showMessageDialog(this, "Sua thong tin that bai");
+        }
+    }//GEN-LAST:event_BtnDoiMatKhauActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,16 +230,18 @@ public class ThayDoiMatKhau extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton BtnDoiMatKhau;
+    private javax.swing.JButton btnDangNhap;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPasswordField pwfNewPW;
-    private javax.swing.JPasswordField pwfNewPW2;
-    private javax.swing.JPasswordField pwfPW;
-    private javax.swing.JTextField txtUser;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField txtGmail;
+    private javax.swing.JPasswordField txtMKMoi;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtTaiKhoan;
+    private javax.swing.JPasswordField txtXacNhanMK;
     // End of variables declaration//GEN-END:variables
 }

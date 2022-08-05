@@ -5,7 +5,9 @@
         <group>
             <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/ThemTaiKhoan.java</file>
             <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/QuanLyNhanVienView.java</file>
+            <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/model/TaiKhoan.java</file>
             <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/ThayDoiMatKhau.java</file>
+            <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/repository/TaiKhoanRepository.java</file>
             <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/DangNhapView.java</file>
             <file>file:/D:/FPT%20polytechnic/QLD/QLNV/QLNhanVien/src/view/QuanLyNhanVienAdmin.java</file>
         </group>

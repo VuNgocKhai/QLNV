@@ -10,6 +10,7 @@ import java.beans.Statement;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import services.TaiKhoanServices;
 
 /**
  *
@@ -20,9 +21,10 @@ public class ThemTaiKhoan extends javax.swing.JFrame {
     /**
      * Creates new form ThemTaiKhoan
      */
+    private TaiKhoanServices taiKhoanServices;
     public ThemTaiKhoan() {
         initComponents();
-
+        taiKhoanServices = new TaiKhoanServices();
     }
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     String url = "jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:1433;databaseName=DANGNHAP";
@@ -148,7 +150,7 @@ public class ThemTaiKhoan extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDKActionPerformed
-        int DK = JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng kí không", "Confirm", JOptionPane.YES_NO_OPTION);
+       int DK = JOptionPane.showConfirmDialog(this, "Bạn có muốn đăng kí không", "Confirm", JOptionPane.YES_NO_OPTION);
         if (DK != JOptionPane.YES_OPTION) {
             return;
         }
