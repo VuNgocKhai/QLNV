@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-import model.TaiKhoanDao;
 
 /**
  *
@@ -25,11 +24,12 @@ public class DangNhapView extends javax.swing.JFrame {
         initComponents();
     }
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://LAPTOP-C94PQP9M\\SQLEXPRESS01:1433;databaseName=DANGNHAP";
+    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=DANGNHAP";
     String user = "sa";
-    String password = "quocanh02";
+    String password = "sa";
     Statement st;
     ResultSet rs;
+    ResultSet rs1;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,6 +68,8 @@ public class DangNhapView extends javax.swing.JFrame {
                 btnDangKyActionPerformed(evt);
             }
         });
+
+        pwfPW.setText("jPasswordField1");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Quản lý nhân viên");
@@ -134,54 +136,44 @@ public class DangNhapView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDangKyActionPerformed
 
     private void btnDAngNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDAngNhapActionPerformed
-//        try {
-//            Class.forName(driver);
-//            Connection conn = DriverManager.getConnection("jdbc:sqlserver://LAPTOP-C94PQP9M\\SQLEXPRESS01:"
-//                    + "1433;databaseName=DANGNHAP;"
-//                    + "user=sa;password=quocanh02;encrypt=true;trustServerCertificate=true;");
-//            String sql = "select * from account where USERNAME=? and PASS=?";
-//            PreparedStatement ps = conn.prepareCall(sql);
-//            ps.setString(1, txtUser.getText());
-//            ps.setString(2, pwfPW.getText());
-//            rs = ps.executeQuery();
-//            if (txtUser.getText().equals("") | pwfPW.getText().equals("")) {
-//                JOptionPane.showMessageDialog(this, "Chưa nhập user hoặc pass");
-//            } else if (rs.next()) {
-//                JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-//                new QuanLyNhanVienView().setVisible(true);
-//                this.dispose();
-//            }
-//            else {JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập");}
-//
-//        } catch (Exception e) {
-//        }        // TODO add your handling code here:
-          if(checkValidate()){
-            String username = txtUser.getText();
-            String pass = new String(pwfPW.getPassword()); 
-              TaiKhoanDao dao = new TaiKhoanDao();
-            if(dao.checkLogin(username, pass)){
-                QuanLyNhanVienView qlnv = new QuanLyNhanVienView();
-                qlnv.setVisible(true);
+        try {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:"
+                    + "1433;databaseName=DANGNHAP;"
+                    + "user=sa;password=sa;encrypt=true;trustServerCertificate=true;");
+            String sql = "select * from account where USERNAME=? and PASS=?";
+            String sql1 = "select * from tkAdmin where taikhoan=? and matkhau=?";
+            PreparedStatement ps = conn.prepareCall(sql);
+            PreparedStatement ps1 = conn.prepareCall(sql1);
+            ps.setString(1, txtUser.getText());
+            ps.setString(2, pwfPW.getText());
+            ps1.setString(1, txtUser.getText());
+            ps1.setString(2, pwfPW.getText());
+            rs = ps.executeQuery();
+            rs1 = ps1.executeQuery();
+            if (txtUser.getText().equals("") | pwfPW.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Chưa nhập user hoặc pass");
+            }else if (rs1.next()) {
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công tài khoản admin");
+                new QuanLyNhanVienAdmin().setVisible(true);
                 this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(this, "Ten dang nhap hoac mat khau khong dung");
             }
-        }else{
-            JOptionPane.showMessageDialog(this, "Ban chua nhap ten dang nhap hoac mat khau");
-        }
+             else if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+                new QuanLyNhanVienView().setVisible(true);
+                this.dispose();
+            }
+            else {JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập");}
+
+        } catch (Exception e) {
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnDAngNhapActionPerformed
 
     private void btThayMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThayMKActionPerformed
-        new ThayDoiMatKhau().setVisible(true);
-        this.dispose();
+new ThayDoiMatKhau().setVisible(true);
+// TODO add your handling code here:
     }//GEN-LAST:event_btThayMKActionPerformed
 
-    public Boolean checkValidate(){
-        if(txtUser.getText().isEmpty()||pwfPW.getText().isBlank()){
-            return false;
-        }
-        return true;
-    }
     /**
      * @param args the command line arguments
      */
