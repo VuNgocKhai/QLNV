@@ -2,43 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package utility;
+
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import repository.DBContext;
 
-/**
- *
- * @author acer
- */
-public class JDBCHelper {
-    private Connection _connection;
-    private PreparedStatement _preparedStatement;
-    private ResultSet _resultSet;
-    
-     public ResultSet executeQuery(String sql, Object... args) {
+public class JDBCHelper implements AutoCloseable {
+
+    public ResultSet exquery(String sql, Object... args) {
+        Connection connection = null;
+        PreparedStatement preparedstatement = null;
+        ResultSet resultSet = null;
         try {
-            _connection = DBContext.getConnection();
-            _preparedStatement = _connection.prepareStatement(sql);
+            connection = DBContext.getConnection();
+            preparedstatement = connection.prepareStatement(sql);
             for (int i = 0; i < args.length; i++) {
-                _preparedStatement.setObject(i + 1, args[i]);
+                preparedstatement.setObject(i + 1, args[i]);
             }
-            _resultSet = _preparedStatement.executeQuery();
-            
-        } catch (Exception ex) {
-            System.out.println("Lỗi truy vấn câu lệnh: " + sql);
+            resultSet = preparedstatement.executeQuery();
+        } catch (Exception e) {
         }
-        
-        return _resultSet;
+        return resultSet;
     }
-     
-      public Integer executeUpdate(String sql, Object... args) {
+    public static Integer executeUpdate(String sql, Object... args) {
         Connection connection = null;
         PreparedStatement preparedstatement = null;
         Integer affectedRows = null;
-        
         try {
             connection = DBContext.getConnection();
             preparedstatement = connection.prepareStatement(sql);
@@ -46,11 +37,16 @@ public class JDBCHelper {
                 preparedstatement.setObject(i + 1, args[i]);
             }
             affectedRows = preparedstatement.executeUpdate();
-
         } catch (Exception ex) {
             System.out.println("Lỗi thực thi câu lệnh: " + sql);
-        }
+        } 
         return affectedRows;
-
     }
+
+    @Override
+    public void close() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+   
 }

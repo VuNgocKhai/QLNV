@@ -15,10 +15,10 @@ import java.util.logging.Logger;
  */
 public class DBContext {
     private static final String USERNAME = "sa";
-    private static final String PASSWORD = "quocanh02";
-    private static final String SERVER = "LAPTOP-C94PQP9M\\SQLEXPRESS01";
+    private static final String PASSWORD = "sa";
+    private static final String SERVER = "DESKTOP-J1UDNQI\\MSSQLSERVER01";
     private static final String PORT = "1433";
-    private static final String DATABASE_NAME = "DANGNHAP";
+    private static final String DATABASE_NAME = "FPL_ĐT";
     private static final boolean USING_SSL = true;
     
     private static String CONNECT_STRING;
@@ -33,12 +33,9 @@ public class DBContext {
                     .append("databaseName=").append(DATABASE_NAME).append(";")
                     .append("user=").append(USERNAME).append(";")
                     .append("password=").append(PASSWORD).append(";")
-                    ;
-            if (USING_SSL) {
-                connectStringBuilder.append("encrypt=true;trustServerCertificate=true;");
-            }
+                    .append("encrypt=true;trustServerCertificate=true;");
+            
             CONNECT_STRING = connectStringBuilder.toString();
-            System.out.println("Connect String có dạng: " + CONNECT_STRING);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -47,4 +44,5 @@ public class DBContext {
     public static Connection getConnection() throws Exception {
         return DriverManager.getConnection(CONNECT_STRING);
     }
+    
 }

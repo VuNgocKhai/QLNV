@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import repository.DBContext;
 
 /**
  *
@@ -24,7 +25,7 @@ public class DangNhapView extends javax.swing.JFrame {
         initComponents();
     }
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=DANGNHAP";
+    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=STUDENTS";
     String user = "sa";
     String password = "sa";
     Statement st;
@@ -40,21 +41,30 @@ public class DangNhapView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        txtUser = new javax.swing.JTextField();
+        pwfPW = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnDAngNhap = new javax.swing.JButton();
-        btnDangKy = new javax.swing.JButton();
-        txtUser = new javax.swing.JTextField();
-        pwfPW = new javax.swing.JPasswordField();
-        jLabel3 = new javax.swing.JLabel();
-        btThayMK = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setText("Quản lý sinh viên");
+
+        pwfPW.setText("jPasswordField1");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("User");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Password");
 
+        btnDAngNhap.setIcon(new javax.swing.ImageIcon("D:\\FPT polytechnic\\QLD\\QLNV\\QLNhanVien\\src\\view\\icon\\User-Interface-Login-icon.png")); // NOI18N
         btnDAngNhap.setText("Đăng nhập");
         btnDAngNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,117 +72,124 @@ public class DangNhapView extends javax.swing.JFrame {
             }
         });
 
-        btnDangKy.setText("Đăng ký");
-        btnDangKy.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icon/Close-2-icon.png"))); // NOI18N
+        jButton1.setText("Close");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDangKyActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        pwfPW.setText("jPasswordField1");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnDAngNhap)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addComponent(pwfPW)
+                    .addComponent(txtUser))
+                .addGap(45, 45, 45))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pwfPW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDAngNhap)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Quản lý nhân viên");
-
-        btThayMK.setText("Thay thông tin");
-        btThayMK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btThayMKActionPerformed(evt);
-            }
-        });
+        jLabel4.setBackground(new java.awt.Color(100, 242, 242));
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIcon(new javax.swing.ImageIcon("D:\\FPT polytechnic\\QLD\\QLNV\\QLNhanVien\\src\\view\\icon\\icon1.jpg")); // NOI18N
+        jLabel4.setMaximumSize(new java.awt.Dimension(512, 512));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnDangKy)
-                        .addGap(34, 34, 34)
-                        .addComponent(btnDAngNhap)
-                        .addGap(39, 39, 39)
-                        .addComponent(btThayMK))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(110, 110, 110))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                            .addComponent(txtUser)
-                            .addComponent(pwfPW, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(pwfPW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(55, 55, 55)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDAngNhap)
-                    .addComponent(btnDangKy)
-                    .addComponent(btThayMK))
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel3)
+                        .addGap(36, 36, 36)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangKyActionPerformed
-        new ThemTaiKhoan().setVisible(true);
-        this.dispose();
-// TODO add your handling code here:
-    }//GEN-LAST:event_btnDangKyActionPerformed
-
     private void btnDAngNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDAngNhapActionPerformed
         try {
-            Class.forName(driver);
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:"
-                    + "1433;databaseName=DANGNHAP;"
-                    + "user=sa;password=sa;encrypt=true;trustServerCertificate=true;");
-            String sql = "select * from account where USERNAME=? and PASS=?";
-            String sql1 = "select * from tkAdmin where taikhoan=? and matkhau=?";
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");            
+            Connection conn = DBContext.getConnection();
+            String sql = "select * from users where USERNAME=? and PASSWORDD=?";
             PreparedStatement ps = conn.prepareCall(sql);
-            PreparedStatement ps1 = conn.prepareCall(sql1);
             ps.setString(1, txtUser.getText());
             ps.setString(2, pwfPW.getText());
-            ps1.setString(1, txtUser.getText());
-            ps1.setString(2, pwfPW.getText());
             rs = ps.executeQuery();
-            rs1 = ps1.executeQuery();
+           
             if (txtUser.getText().equals("") | pwfPW.getText().equals("")) {
                 JOptionPane.showMessageDialog(this, "Chưa nhập user hoặc pass");
-            }else if (rs1.next()) {
-                JOptionPane.showMessageDialog(this, "Đăng nhập thành công tài khoản admin");
-                new QuanLyNhanVienAdmin().setVisible(true);
-                this.dispose();
+            } else if (rs.next()) {
+                if (rs.getString("ROLE").equals("canbo")) {
+                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công quản lý sinh viên");
+                    new QuanLySinhVien().setVisible(true);
+                    this.dispose();
+                }
+                else{JOptionPane.showMessageDialog(this, "Đăng nhập thành công quản lý điểm");
+                    new QuanLyDiem().setVisible(true);
+                    this.dispose();}
+            } else {
+                JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập");
             }
-             else if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-                new QuanLyNhanVienView().setVisible(true);
-                this.dispose();
-            }
-            else {JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập");}
 
         } catch (Exception e) {
         }        // TODO add your handling code here:
     }//GEN-LAST:event_btnDAngNhapActionPerformed
 
-    private void btThayMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThayMKActionPerformed
-new ThayDoiMatKhau().setVisible(true);
-// TODO add your handling code here:
-    }//GEN-LAST:event_btThayMKActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,12 +227,13 @@ new ThayDoiMatKhau().setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btThayMK;
     private javax.swing.JButton btnDAngNhap;
-    private javax.swing.JButton btnDangKy;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField pwfPW;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
