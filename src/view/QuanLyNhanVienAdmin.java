@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package view;
 
-/**
- *
- * @author ngock
- */
+
 import model.NhanVien;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -24,9 +18,7 @@ import repository.DBContext;
 
 public class QuanLyNhanVienAdmin extends javax.swing.JFrame {
 
-    /**
-     * Creates new form QuanLyNhanVienAdmin
-     */
+    
     ArrayList<NhanVien> list = new ArrayList<>();
     DefaultTableModel model;
     private Connection conn;
@@ -55,7 +47,7 @@ public class QuanLyNhanVienAdmin extends javax.swing.JFrame {
 
     public boolean check() {
         if (txtId.getText().isBlank() || txtName.getText().isBlank() || txtEmail.getText().isBlank()
-                || txtPhone.getText().isBlank() || txtAddress.getText().isBlank()|| txtLuong.getText().isBlank()) {
+                || txtPhone.getText().isBlank() || txtAddress.getText().isBlank() || txtLuong.getText().isBlank()) {
             JOptionPane.showMessageDialog(rootPane, "Hãy nhập đủ dữ liệu sau đó ấn Save");
             return false;
         } else if (!(txtEmail.getText()).matches("^(.+)@(.+)$")) {
@@ -67,18 +59,22 @@ public class QuanLyNhanVienAdmin extends javax.swing.JFrame {
             return false;
         }
         return true;
-    } public void fillTable() {
+    }
+
+    public void fillTable() {
         model.setRowCount(0);
         String gender;
         for (NhanVien s : list) {
-            if (s.isGender()==true) {
-                 gender = "Nam";
+            if (s.isGender() == true) {
+                gender = "Nam";
+            } else {
+                gender = "Nữ";
             }
-            else{ gender = "Nữ";}
-            Object[] row = new Object[]{s.getMasv(), s.getName(), s.getEmail(), s.getPhone(), gender, s.getAddress(), s.getImage(),s.getLuong()};
+            Object[] row = new Object[]{s.getMasv(), s.getName(), s.getEmail(), s.getPhone(), gender, s.getAddress(), s.getImage(), s.getLuong()};
             model.addRow(row);
         }
     }
+
     public boolean deleteStudent() {
         try {
             String ma = txtId.getText();
@@ -91,12 +87,13 @@ public class QuanLyNhanVienAdmin extends javax.swing.JFrame {
         }
         return false;
     }
+
     public boolean updateStudent() {
         try {
             String ma = txtId.getText();
             String sql = "UPDATE NhanVien SET HOTEN = ?, EMAIL = ?, SODT = ?, GIOITINH = ?, DIACHI = ?, HINH = ? ,Luong = ? WHERE MASV = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
-            
+
             ps.setString(1, txtName.getText());
             ps.setString(2, txtEmail.getText());
             ps.setString(3, txtPhone.getText());
@@ -118,6 +115,7 @@ public class QuanLyNhanVienAdmin extends javax.swing.JFrame {
         }
         return false;
     }
+
     public boolean saveStudent(NhanVien sv) {
         String sql = "INSERT INTO NhanVien VALUES(?,?,?,?,?,?,?,?)";
         try {
@@ -136,6 +134,7 @@ public class QuanLyNhanVienAdmin extends javax.swing.JFrame {
         }
         return false;
     }
+
     public void showDetail(int index) {
         txtId.setText(list.get(index).getMasv());
         txtName.setText(list.get(index).getName());
@@ -150,7 +149,8 @@ public class QuanLyNhanVienAdmin extends javax.swing.JFrame {
         upImage(list.get(index).getImage());
         txtLuong.setText(list.get(index).getLuong());
     }
-public ArrayList<NhanVien> getListStudent() {
+
+    public ArrayList<NhanVien> getListStudent() {
         String sql = "SELECT * FROM NhanVien";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -172,6 +172,7 @@ public ArrayList<NhanVien> getListStudent() {
         }
         return list;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -300,6 +301,11 @@ public ArrayList<NhanVien> getListStudent() {
 
         btnSortByLuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icon/sort.png"))); // NOI18N
         btnSortByLuong.setText("Sắp xếp theo Lương");
+        btnSortByLuong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortByLuongActionPerformed(evt);
+            }
+        });
 
         tblQLSV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -451,14 +457,14 @@ public ArrayList<NhanVien> getListStudent() {
     }//GEN-LAST:event_txtIdActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-if (check()==true) {
+        if (check() == true) {
             NhanVien sv = new NhanVien();
             sv.setMasv(txtId.getText());
             sv.setName(txtName.getText());
             sv.setEmail(txtEmail.getText());
             sv.setPhone(txtPhone.getText());
             boolean gt;
-            if(rdoNam.isSelected()) {
+            if (rdoNam.isSelected()) {
                 gt = true;
             } else {
                 gt = false;
@@ -487,7 +493,7 @@ if (check()==true) {
     }//GEN-LAST:event_tblQLSVMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-int index = tblQLSV.getSelectedRow();
+        int index = tblQLSV.getSelectedRow();
         if (index == -1) {
             JOptionPane.showMessageDialog(rootPane, "Bạn chưa chọn hàng để xóa!");
         } else {
@@ -496,19 +502,18 @@ int index = tblQLSV.getSelectedRow();
             fillTable();
             this.btnNewActionPerformed(evt);
             JOptionPane.showMessageDialog(rootPane, "Xóa thành công!");
-        }           // TODO add your handling code here:
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-index = tblQLSV.getSelectedRow();
+        index = tblQLSV.getSelectedRow();
         if (index == -1) {
             JOptionPane.showMessageDialog(rootPane, "Bạn chưa chọn hàng cần update!");
-        } else if(!(tblQLSV.getValueAt(index, 0).toString().equals(txtId.getText()))){
-            JOptionPane.showMessageDialog(this,"Mã nhân viên không được sửa lại");
+        } else if (!(tblQLSV.getValueAt(index, 0).toString().equals(txtId.getText()))) {
+            JOptionPane.showMessageDialog(this, "Mã nhân viên không được sửa lại");
             return;
-        }
-        else {
-            
+        } else {
+
             list.remove(index);
             this.updateStudent();
             NhanVien sv = new NhanVien();
@@ -533,15 +538,19 @@ index = tblQLSV.getSelectedRow();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void jlbImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbImageMouseClicked
- JFileChooser file = new JFileChooser("src\\image\\");
-            int kq = file.showOpenDialog(file);
-            if (kq == JFileChooser.APPROVE_OPTION) {
-                imageName = file.getSelectedFile().getName();
-                upImage(imageName);
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Bạn chưa chọn ảnh...");
-            }        // TODO add your handling code here:
+        JFileChooser file = new JFileChooser("src\\image\\");
+        int kq = file.showOpenDialog(file);
+        if (kq == JFileChooser.APPROVE_OPTION) {
+            imageName = file.getSelectedFile().getName();
+            upImage(imageName);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Bạn chưa chọn ảnh...");
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_jlbImageMouseClicked
+
+    private void btnSortByLuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortByLuongActionPerformed
+        
+    }//GEN-LAST:event_btnSortByLuongActionPerformed
 
     /**
      * @param args the command line arguments

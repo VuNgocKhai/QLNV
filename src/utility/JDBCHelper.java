@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package utility;
 
 import java.sql.Connection;
@@ -9,16 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import repository.DBContext;
 
-/**
- *
- * @author acer
- */
 public class JDBCHelper {
+
     private Connection _connection;
     private PreparedStatement _preparedStatement;
     private ResultSet _resultSet;
-    
-     public ResultSet executeQuery(String sql, Object... args) {
+
+    public ResultSet executeQuery(String sql, Object... args) {
         try {
             _connection = DBContext.getConnection();
             _preparedStatement = _connection.prepareStatement(sql);
@@ -26,19 +19,19 @@ public class JDBCHelper {
                 _preparedStatement.setObject(i + 1, args[i]);
             }
             _resultSet = _preparedStatement.executeQuery();
-            
+
         } catch (Exception ex) {
             System.out.println("Lỗi truy vấn câu lệnh: " + sql);
         }
-        
+
         return _resultSet;
     }
-     
-      public Integer executeUpdate(String sql, Object... args) {
+
+    public Integer executeUpdate(String sql, Object... args) {
         Connection connection = null;
         PreparedStatement preparedstatement = null;
         Integer affectedRows = null;
-        
+
         try {
             connection = DBContext.getConnection();
             preparedstatement = connection.prepareStatement(sql);
