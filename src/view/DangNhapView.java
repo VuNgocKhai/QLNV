@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-import repository.DBContext;
 
 /**
  *
@@ -25,7 +24,7 @@ public class DangNhapView extends javax.swing.JFrame {
         initComponents();
     }
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=STUDENTS";
+    String url = "jdbc:sqlserver://DESKTOP-J1UDNQI:1433;databaseName=DANGNHAP";
     String user = "sa";
     String password = "sa";
     Statement st;
@@ -47,14 +46,15 @@ public class DangNhapView extends javax.swing.JFrame {
         pwfPW = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btThayMK = new javax.swing.JButton();
         btnDAngNhap = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnDangKy = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Quản lý sinh viên");
+        jLabel3.setText("Quản lý nhân viên");
 
         pwfPW.setText("jPasswordField1");
 
@@ -64,6 +64,14 @@ public class DangNhapView extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Password");
 
+        btThayMK.setIcon(new javax.swing.ImageIcon("D:\\FPT polytechnic\\QLD\\QLNV\\QLNhanVien\\src\\view\\icon\\change-password-icon.png")); // NOI18N
+        btThayMK.setText("Thay thông tin");
+        btThayMK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btThayMKActionPerformed(evt);
+            }
+        });
+
         btnDAngNhap.setIcon(new javax.swing.ImageIcon("D:\\FPT polytechnic\\QLD\\QLNV\\QLNhanVien\\src\\view\\icon\\User-Interface-Login-icon.png")); // NOI18N
         btnDAngNhap.setText("Đăng nhập");
         btnDAngNhap.addActionListener(new java.awt.event.ActionListener() {
@@ -72,11 +80,12 @@ public class DangNhapView extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icon/Close-2-icon.png"))); // NOI18N
-        jButton1.setText("Close");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDangKy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icon/add.png"))); // NOI18N
+        btnDangKy.setText("Đăng ký");
+        btnDangKy.setToolTipText("");
+        btnDangKy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDangKyActionPerformed(evt);
             }
         });
 
@@ -89,15 +98,19 @@ public class DangNhapView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnDAngNhap)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addComponent(pwfPW)
-                    .addComponent(txtUser))
-                .addGap(45, 45, 45))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pwfPW, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDangKy)
+                .addGap(44, 44, 44)
+                .addComponent(btnDAngNhap)
+                .addGap(18, 18, 18)
+                .addComponent(btThayMK)
+                .addGap(18, 18, 18))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,8 +125,9 @@ public class DangNhapView extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btThayMK)
                     .addComponent(btnDAngNhap)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDangKy))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -158,38 +172,50 @@ public class DangNhapView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangKyActionPerformed
+        new ThemTaiKhoan().setVisible(true);
+        this.dispose();
+// TODO add your handling code here:
+    }//GEN-LAST:event_btnDangKyActionPerformed
+
     private void btnDAngNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDAngNhapActionPerformed
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");            
-            Connection conn = DBContext.getConnection();
-            String sql = "select * from users where USERNAME=? and PASSWORDD=?";
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://DESKTOP-J1UDNQI\\MSSQLSERVER01:"
+                    + "1433;databaseName=DANGNHAP;"
+                    + "user=sa;password=sa;encrypt=true;trustServerCertificate=true;");
+            String sql = "select * from account where USERNAME=? and PASS=?";
+            String sql1 = "select * from tkAdmin where taikhoan=? and matkhau=?";
             PreparedStatement ps = conn.prepareCall(sql);
+            PreparedStatement ps1 = conn.prepareCall(sql1);
             ps.setString(1, txtUser.getText());
             ps.setString(2, pwfPW.getText());
+            ps1.setString(1, txtUser.getText());
+            ps1.setString(2, pwfPW.getText());
             rs = ps.executeQuery();
-           
+            rs1 = ps1.executeQuery();
             if (txtUser.getText().equals("") | pwfPW.getText().equals("")) {
                 JOptionPane.showMessageDialog(this, "Chưa nhập user hoặc pass");
-            } else if (rs.next()) {
-                if (rs.getString("ROLE").equals("canbo")) {
-                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công quản lý sinh viên");
-                    new QuanLySinhVien().setVisible(true);
-                    this.dispose();
-                }
-                else{JOptionPane.showMessageDialog(this, "Đăng nhập thành công quản lý điểm");
-                    new QuanLyDiem().setVisible(true);
-                    this.dispose();}
-            } else {
-                JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập");
+            }else if (rs1.next()) {
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công tài khoản admin");
+                new QuanLyNhanVienAdmin().setVisible(true);
+                this.dispose();
             }
+             else if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+                new QuanLyNhanVienView().setVisible(true);
+                this.dispose();
+            }
+            else {JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập");}
 
         } catch (Exception e) {
         }        // TODO add your handling code here:
     }//GEN-LAST:event_btnDAngNhapActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-this.dispose();        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btThayMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThayMKActionPerformed
+new ThayDoiMatKhau().setVisible(true);
+// TODO add your handling code here:
+    }//GEN-LAST:event_btThayMKActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,8 +253,9 @@ this.dispose();        // TODO add your handling code here:
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btThayMK;
     private javax.swing.JButton btnDAngNhap;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnDangKy;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

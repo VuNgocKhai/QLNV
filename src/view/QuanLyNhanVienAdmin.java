@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import repository.DBContext;
 
-public class QuanLyNhanVienView extends javax.swing.JFrame {
+public class QuanLyNhanVienAdmin extends javax.swing.JFrame {
 
     /**
      * Creates new form QuanLyNhanVienAdmin
@@ -33,7 +33,7 @@ public class QuanLyNhanVienView extends javax.swing.JFrame {
     String imageName = null;
     int index = 0;
 
-    public QuanLyNhanVienView() {
+    public QuanLyNhanVienAdmin() {
         initComponents();
         try {
             conn = DBContext.getConnection();
@@ -41,14 +41,137 @@ public class QuanLyNhanVienView extends javax.swing.JFrame {
             System.out.println(e);
         }
         model = (DefaultTableModel) tblQLSV.getModel();
-btnSortByLuong.setEnabled(false);
-btnSua.setEnabled(false);
-btnThem.setEnabled(false);
-btnXoa.setEnabled(false);
-        
+
+        list = getListStudent();
+        fillTable();
     }
 
-    
+    public void upImage(String imageName) {
+        ImageIcon icon = new ImageIcon("src\\image\\" + imageName);
+        Image image = icon.getImage();
+        ImageIcon icon1 = new ImageIcon(image.getScaledInstance(jlbImage.getWidth(), jlbImage.getHeight(), image.SCALE_SMOOTH));
+        jlbImage.setIcon(icon1);
+    }
+
+    public boolean check() {
+        if (txtId.getText().isBlank() || txtName.getText().isBlank() || txtEmail.getText().isBlank()
+                || txtPhone.getText().isBlank() || txtAddress.getText().isBlank()|| txtLuong.getText().isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Hãy nhập đủ dữ liệu sau đó ấn Save");
+            return false;
+        } else if (!(txtEmail.getText()).matches("^(.+)@(.+)$")) {
+            JOptionPane.showMessageDialog(rootPane, "Sai định dạng email");
+            txtEmail.requestFocus();
+            return false;
+        } else if (!rdoNam.isSelected() && !rdoNu.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn giới tính");
+            return false;
+        }
+        return true;
+    } public void fillTable() {
+        model.setRowCount(0);
+        String gender;
+        for (NhanVien s : list) {
+            if (s.isGender()==true) {
+                 gender = "Nam";
+            }
+            else{ gender = "Nữ";}
+            Object[] row = new Object[]{s.getMasv(), s.getName(), s.getEmail(), s.getPhone(), gender, s.getAddress(), s.getImage(),s.getLuong()};
+            model.addRow(row);
+        }
+    }
+    public boolean deleteStudent() {
+        try {
+            String ma = txtId.getText();
+            String sql = "DELETE FROM NhanVien WHERE MAnv = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, ma);
+            ps.execute();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    public boolean updateStudent() {
+        try {
+            String ma = txtId.getText();
+            String sql = "UPDATE NhanVien SET HOTEN = ?, EMAIL = ?, SODT = ?, GIOITINH = ?, DIACHI = ?, HINH = ? ,Luong = ? WHERE MASV = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            
+            ps.setString(1, txtName.getText());
+            ps.setString(2, txtEmail.getText());
+            ps.setString(3, txtPhone.getText());
+            boolean gt;
+            if (rdoNam.isSelected()) {
+                gt = true;
+            } else {
+                gt = false;
+            }
+            ps.setBoolean(4, gt);
+            ps.setString(5, txtAddress.getText());
+            ps.setString(6, imageName);
+            ps.setString(5, txtLuong.getText());
+            ps.setString(8, txtId.getText());
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    public boolean saveStudent(NhanVien sv) {
+        String sql = "INSERT INTO NhanVien VALUES(?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, sv.getMasv());
+            ps.setString(2, sv.getName());
+            ps.setString(3, sv.getEmail());
+            ps.setString(4, sv.getPhone());
+            ps.setBoolean(5, sv.isGender());
+            ps.setString(6, sv.getAddress());
+            ps.setString(7, imageName);
+            ps.setString(8, sv.getLuong());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    public void showDetail(int index) {
+        txtId.setText(list.get(index).getMasv());
+        txtName.setText(list.get(index).getName());
+        txtEmail.setText(list.get(index).getEmail());
+        txtPhone.setText(list.get(index).getPhone());
+        if (list.get(index).isGender() == true) {
+            rdoNam.setSelected(true);
+        } else {
+            rdoNu.setSelected(true);
+        }
+        txtAddress.setText(list.get(index).getAddress());
+        upImage(list.get(index).getImage());
+        txtLuong.setText(list.get(index).getLuong());
+    }
+public ArrayList<NhanVien> getListStudent() {
+        String sql = "SELECT * FROM NhanVien";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                NhanVien sv = new NhanVien();
+                sv.setMasv(rs.getString(1));
+                sv.setName(rs.getString(2));
+                sv.setEmail(rs.getString(3));
+                sv.setPhone(rs.getString(4));
+                sv.setGender(rs.getBoolean(5));
+                sv.setAddress(rs.getString(6));
+                sv.setImage(rs.getString(7));
+                sv.setLuong(rs.getString(8));
+                list.add(sv);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return list;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -86,7 +209,6 @@ btnXoa.setEnabled(false);
         btnSortByLuong = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblQLSV = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -198,9 +320,6 @@ btnXoa.setEnabled(false);
         });
         jScrollPane3.setViewportView(tblQLSV);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/icon/Zoom-icon.png"))); // NOI18N
-        jButton1.setText("Search");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -214,8 +333,6 @@ btnXoa.setEnabled(false);
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(49, 49, 49)
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jSeparator1)
@@ -278,8 +395,7 @@ btnXoa.setEnabled(false);
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -320,7 +436,7 @@ btnXoa.setEnabled(false);
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(204, Short.MAX_VALUE))
+                .addContainerGap(212, Short.MAX_VALUE))
         );
 
         pack();
@@ -335,23 +451,96 @@ btnXoa.setEnabled(false);
     }//GEN-LAST:event_txtIdActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
+if (check()==true) {
+            NhanVien sv = new NhanVien();
+            sv.setMasv(txtId.getText());
+            sv.setName(txtName.getText());
+            sv.setEmail(txtEmail.getText());
+            sv.setPhone(txtPhone.getText());
+            boolean gt;
+            if(rdoNam.isSelected()) {
+                gt = true;
+            } else {
+                gt = false;
+            }
+            sv.setGender(gt);
+            sv.setAddress(txtAddress.getText());
+            sv.setImage(imageName);
+            sv.setLuong(txtLuong.getText());
+            if (saveStudent(sv)) {
+                JOptionPane.showMessageDialog(rootPane, "Lưu thành công!");
+                list.add(sv);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Lỗi");
+            }
+            fillTable();
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tblQLSVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLSVMouseClicked
-        
+        try {
+            index = tblQLSV.getSelectedRow();
+            showDetail(index);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_tblQLSVMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-      // TODO add your handling code here:
+int index = tblQLSV.getSelectedRow();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Bạn chưa chọn hàng để xóa!");
+        } else {
+            this.deleteStudent();
+            list.remove(index);
+            fillTable();
+            this.btnNewActionPerformed(evt);
+            JOptionPane.showMessageDialog(rootPane, "Xóa thành công!");
+        }           // TODO add your handling code here:
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-      // TODO add your handling code here:
+index = tblQLSV.getSelectedRow();
+        if (index == -1) {
+            JOptionPane.showMessageDialog(rootPane, "Bạn chưa chọn hàng cần update!");
+        } else if(!(tblQLSV.getValueAt(index, 0).toString().equals(txtId.getText()))){
+            JOptionPane.showMessageDialog(this,"Mã nhân viên không được sửa lại");
+            return;
+        }
+        else {
+            
+            list.remove(index);
+            this.updateStudent();
+            NhanVien sv = new NhanVien();
+            sv.setMasv(txtId.getText());
+            sv.setName(txtName.getText());
+            sv.setEmail(txtEmail.getText());
+            sv.setPhone(txtPhone.getText());
+            boolean gt;
+            if (rdoNam.isSelected()) {
+                gt = true;
+            } else {
+                gt = false;
+            }
+            sv.setGender(gt);
+            sv.setAddress(txtAddress.getText());
+            sv.setImage(imageName);
+            sv.setLuong(txtLuong.getText());
+            list.add(sv);
+            fillTable();
+            JOptionPane.showMessageDialog(this, "Update thành công!");
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void jlbImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlbImageMouseClicked
-        // TODO add your handling code here:
+ JFileChooser file = new JFileChooser("src\\image\\");
+            int kq = file.showOpenDialog(file);
+            if (kq == JFileChooser.APPROVE_OPTION) {
+                imageName = file.getSelectedFile().getName();
+                upImage(imageName);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Bạn chưa chọn ảnh...");
+            }        // TODO add your handling code here:
     }//GEN-LAST:event_jlbImageMouseClicked
 
     /**
@@ -371,21 +560,20 @@ btnXoa.setEnabled(false);
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuanLyNhanVienView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLyNhanVienAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuanLyNhanVienView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLyNhanVienAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuanLyNhanVienView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLyNhanVienAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuanLyNhanVienView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLyNhanVienAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLyNhanVienView().setVisible(true);
+                new QuanLyNhanVienAdmin().setVisible(true);
             }
         });
     }
@@ -396,7 +584,6 @@ btnXoa.setEnabled(false);
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
